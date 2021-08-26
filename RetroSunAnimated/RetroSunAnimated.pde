@@ -3,8 +3,8 @@ import java.util.*;
 int sunRadius = 150;
 int sunCenterY;
 int sunsetY;
-int slitSpacePixels = sunRadius / 10;
 int[] sunsetBandHeights = {3, 5, 7, 8, 9, 10, 10, 10, 10, 10};
+int slitSpacePixels = sunRadius / sunsetBandHeights.length;
 List<Rectangle> slits = new ArrayList<Rectangle>();
 
 class Rectangle{
@@ -35,31 +35,44 @@ void setup(){
     
     sunsetY += slitSpacePixels;
   }
+  
+  frameRate(15);
 }
 
 void draw() {
   background(62, 11, 77);
   
+  // Sun
   noStroke();
   fill(255, 211, 15); 
   ellipse(width/2, sunCenterY, 2*sunRadius, 2*sunRadius);
   
-  sunsetY = sunCenterY;
-  fill(62, 11, 77);
+  // All the rectangular slits--same color as background
+  // to create the illusion of missing pieces in the sun
   for( Rectangle r : slits ){
+    fill(62, 11, 77);
     rect(r.x, r.y, width, r.h);
     r.y--;
     
     if( r.y < sunCenterY ){
       r.y = sunCenterY + sunRadius;
-      r.h = sunsetBandHeights[r.h / slitSpacePixels];
     }
+    
+    // Resize the height of the slits as they move up
+    r.h = getNewBandHeight(r);
   }
 }
 
+// The closer the slit is to the center the smaller to make it
 int getNewBandHeight(Rectangle r){
-  int sunsetBandHeight = 0;
+  int bandHeight = 0;
 
+  int distBelowSunCenter = r.y - sunCenterY;
   
-  return 0;
+  if( distBelowSunCenter > 0 ){
+    int index = distBelowSunCenter / slitSpacePixels;
+    bandHeight = sunsetBandHeights[index % sunsetBandHeights.length];
+  }
+  
+  return bandHeight;
 }
