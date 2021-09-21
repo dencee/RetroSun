@@ -13,10 +13,10 @@ class Star {
     diameter = random(0.1, 3);
   }
 
-  void display() {
+  void draw() {
     noStroke();
     fill(starColor, alpha);
     float blink = random(0, 0.8);
-    circle(x, y, diameter+blink);
+    circle(x, y, diameter + blink);
   }
 }
