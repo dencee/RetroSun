@@ -1,6 +1,6 @@
-int sunRadius = 350;
+int sunRadius = 400;
 int numSunBands = 5;
-int numReflectionBands = 5;
+int numReflectionBands = 7;
 float sunSlitSpeed = 0.5;
 float reflectionSpeed = 0.5;
 color bgColor = color(31, 0, 48);
@@ -29,7 +29,7 @@ void setup() {
   
   // Setup Reflection bars
   int topX = sun.sunCenterX - sun.sunRadius - (sun.sunRadius/4);
-  int topY = sun.sunCenterY + sun.sunRadius + 15;
+  int topY = sun.sunCenterY + sun.sunRadius - (sun.sunRadius/6);
   reflection = new Reflection(numReflectionBands, topX, topY, reflectionSpeed);
 
   // Setup stars

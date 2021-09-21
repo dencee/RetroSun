@@ -64,15 +64,23 @@ public class Sun {
     fill(sunKeyColor);
     ellipse(sunCenterX, sunCenterY, 2*sunRadius, 2*sunRadius);
 
+    // Cover the bottom of the circle to make it look like a sunrise
+    int rY = sunCenterY + sunRadius - (sunRadius / 5);
+    int rX = int(sunCenterX - sqrt( sq(sunRadius) - sq(rY - sunCenterY) ));
+    int rW = int(sunCenterX + sqrt( sq(sunRadius) - sq(rY - sunCenterY) )) - rX;
+    int rH = sunRadius / 5;
+    fill(bgColor);
+    rect( rX, rY, rW, rH );
+
     // Lindear color gradient
     loadPixels();
     int i = 0;
-    for ( int y = 0; y < height; y++) {
-      for ( int x = 0; x < width; x++) {
+    for( int y = 0; y < height; y++ ) {
+      for( int x = 0; x < width; x++ ) {
         color sampleColor = pixels[i];
     
         // Only change the pixels with the color of the sun
-        if ( sunKeyColor == (0xFF000000 | sampleColor) ) {
+        if( sunKeyColor == (0xFF000000 | sampleColor) ) {
           float originY = sunCenterY - sunRadius;
           float endY = sunCenterY + sunRadius;
           float step = map(y, originY, endY, 0, 1);
@@ -113,7 +121,7 @@ public class Sun {
       // Resize the height of the slits as they move up.
       // Y coordinate must be calculated first
       r.h = (int)map(r.y, sunsetY, (sunCenterY + sunRadius), 1, sunRadius / numBands);
-      r.x = int(sunCenterX - sqrt( sq(sunRadius) - sq(r.y - sunCenterY) )); 
+      r.x = int(sunCenterX - sqrt( sq(sunRadius) - sq(r.y - sunCenterY) ));
       r.w = int(sunCenterX + sqrt( sq(sunRadius) - sq(r.y - sunCenterY) )) - r.x;
       r.w += 2;   // 2-pixel padding looks better near the top
     }
