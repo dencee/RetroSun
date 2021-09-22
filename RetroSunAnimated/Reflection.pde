@@ -48,8 +48,8 @@ class Reflection {
     
     for ( Rectangle bar : lowerBars ) {
       for ( int i = (int)bar.x; i < bar.x + bar.w; i++ ) {
-        float alphaMax = -255 - ((bar.y - topY));
-        float alphaMin = 255 + ((bar.y - topY));
+        float alphaMax = -255 - (0.1 * (bar.y - topY));
+        float alphaMin = 255 + (0.1 * (bar.y - topY));
         float alpha = map(i, bar.x, bar.x + bar.w, alphaMin, alphaMax);
         float step = map(i, bar.x, bar.x + bar.w, 0, 1);
         color lc = interpolateColor(barColors, step, RGB);

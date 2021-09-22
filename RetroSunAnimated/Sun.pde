@@ -64,7 +64,7 @@ public class Sun {
     fill(sunKeyColor);
     ellipse(sunCenterX, sunCenterY, 2*sunRadius, 2*sunRadius);
 
-    // Cover the bottom of the circle to make it look like a sunrise
+    // Cover the bottom of the circle to make it look like a sunrise/sunset
     int rY = sunCenterY + sunRadius - (sunRadius / 5);
     int rX = int(sunCenterX - sqrt( sq(sunRadius) - sq(rY - sunCenterY) ));
     int rW = int(sunCenterX + sqrt( sq(sunRadius) - sq(rY - sunCenterY) )) - rX;
@@ -85,9 +85,10 @@ public class Sun {
           float endY = sunCenterY + sunRadius;
           float step = map(y, originY, endY, 0, 1);
     
-          color lc = 0x00FFFFFF & interpolateColor(sunColors, step, RGB);
+          color lc = interpolateColor(sunColors, step, RGB);
     
-          color alpha = sampleColor & 0xFF000000;
+          // alpha set to full opacity
+          color alpha = 0xFF000000;
           color gradientColor = alpha | lc;
           pixels[i] = gradientColor;
         }

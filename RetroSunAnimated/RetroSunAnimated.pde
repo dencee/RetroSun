@@ -1,8 +1,8 @@
 int sunRadius = 400;
 int numSunBands = 5;
-int numReflectionBands = 7;
-float sunSlitSpeed = 0.5;
-float reflectionSpeed = 0.5;
+int numReflectionBands = 6;
+float sunSlitSpeed = 0.8;
+float reflectionSpeed = 0.8;
 color bgColor = color(31, 0, 48);
 color starColor = color(255);
 
