@@ -40,7 +40,7 @@ public class Sun {
   int slitTopBoundary;
   ArrayList<Rectangle> slits;
   
-  Sun(int radius, int numBands, float speed) {
+  Sun(int cx, int cy, int radius, int numBands, float speed) {
     this.sunRadius = radius;
     this.numBands = numBands;
     this.speed = speed;
@@ -49,12 +49,12 @@ public class Sun {
     sunKeyColor = color(120, 100, 100, 255);
     
     // Setup sun position
-    initialize(width / 2, (height / 2) - 50);
+    initialize(cx, cy);
   }
 
-  void initialize(int sunWidth, int sunHeight){
-    this.sunCenterX = sunWidth;
-    this.sunCenterY = sunHeight;
+  void initialize(int sunCenterX, int sunCenterY){
+    this.sunCenterX = sunCenterX;
+    this.sunCenterY = sunCenterY;
     sunsetY = sunCenterY - (sunRadius / 4);
     
     slitSpacePixels = (sunCenterY + sunRadius - sunsetY ) / numBands;

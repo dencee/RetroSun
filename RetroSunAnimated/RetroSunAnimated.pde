@@ -33,11 +33,13 @@ void setup() {
   bgColor = color(bgHue, bgSat, bgBright);
 
   // Setup Sun a little below the top of the window
-  sun = new Sun(sunRadius - 25, numSunBands, sunSlitSpeed);
+  int sunCenterX = width / 2;
+  int sunCenterY = (height / 2) - 50;
+  sun = new Sun(sunCenterX, sunCenterY, sunRadius - 25, numSunBands, sunSlitSpeed);
   
   // Setup Reflection bars
-  int topX = sun.sunCenterX - sun.sunRadius - (sun.sunRadius/4);
-  int topY = sun.sunCenterY + sun.sunRadius - (sun.sunRadius/6);
+  int topX = sunCenterX - sunRadius - (sunRadius / 4);
+  int topY = sunCenterY + sunRadius - (sunRadius / 6);
   reflection = new Reflection(numReflectionBands, topX, topY, reflectionSpeed);
 
   // Setup shore
@@ -54,7 +56,7 @@ void draw() {
   background(bgColor);
 
   sun.draw();
-  
+
   drawShore();
 
   reflection.draw();
@@ -65,14 +67,14 @@ void draw() {
 void mouseDragged(){
   // Darken the background when the sun goes below the shore
   bgBright = map(mouseY, sunRadius, shoreY + sunRadius, bgBrightDefault, 0);
-  bgColor = color(bgHue, bgSat, bgBright);
+  bgColor = color(bgHue, bgSat, constrain(bgBright, 0, bgBrightDefault));
     
   // Reset the top of the sun to the mouseY posiiton 
   sun.initialize(sun.sunCenterX, mouseY + sunRadius);
     
   // Fewer reflection bars when the sun is lower
   int bars = int(map(sun.sunCenterY, sunRadius, shoreY + sunRadius, numReflectionBands, 0));
-  reflection.initialize(bars);
+  reflection.initialize(constrain(bars, 0, numReflectionBands));
   
   // Set star brightness
   int alpha = int(map(sun.sunCenterY, sunRadius, shoreY + sunRadius, 0, 255));
