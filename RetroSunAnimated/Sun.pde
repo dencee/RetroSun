@@ -1,4 +1,19 @@
 public class Sun {
+  // HSB colors
+  color[] sunColors = {
+    color(57, 94.8, 83.1), 
+    color(55, 86, 83.9), 
+    color(47, 87.7, 82.7), 
+    color(39, 76.4, 84.7), 
+    color(24, 71, 85.1), 
+    color(10, 62, 83.5), 
+    color(342, 75.9, 83.1), 
+    color(330, 86.5, 84.3), 
+    color(323, 94.9, 85.1), 
+    color(318, 100, 85.1)
+  };
+/*
+  // RGB colors
   color[] sunColors = {
     color(212, 202, 11), 
     color(214, 198, 30), 
@@ -11,8 +26,8 @@ public class Sun {
     color(217, 11, 139), 
     color(217, 0, 151)
   };
-  
-  color sunKeyColor = color(0, 255, 0, 255);
+*/
+  color sunKeyColor;
   int sunRadius;
   int sunCenterX;
   int sunCenterY;
@@ -29,8 +44,17 @@ public class Sun {
     this.sunRadius = radius;
     this.numBands = numBands;
     this.speed = speed;
-    sunCenterX = width / 2;
-    sunCenterY = (height / 2) - 50;
+    
+    // Green
+    sunKeyColor = color(120, 100, 100, 255);
+    
+    // Setup sun position
+    initialize(width / 2, (height / 2) - 50);
+  }
+
+  void initialize(int sunWidth, int sunHeight){
+    this.sunCenterX = sunWidth;
+    this.sunCenterY = sunHeight;
     sunsetY = sunCenterY - (sunRadius / 4);
     
     slitSpacePixels = (sunCenterY + sunRadius - sunsetY ) / numBands;

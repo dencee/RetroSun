@@ -1,4 +1,16 @@
 class Reflection {
+  // HSB colors
+  color[] barColors = {
+    color(285, 96.6, 23.1), 
+    color(312, 100, 42.7), 
+    color(340, 66.9, 60.4), 
+    color(11, 60.8, 62), 
+    color(340, 66.9, 60.4), 
+    color(312, 100, 42.7), 
+    color(285, 96.6, 23.1)
+  };
+/*
+  // RGB colors
   color[] barColors = {
     color(45, 2, 59), 
     color(109, 0, 88), 
@@ -8,7 +20,7 @@ class Reflection {
     color(109, 0, 88), 
     color(45, 2, 59)
   };
-  
+*/
   int numReflectionBars;
   int topX;
   int topY;
@@ -19,10 +31,16 @@ class Reflection {
   ArrayList<Rectangle> lowerBars;
   
   Reflection(int numBars, int topX, int topY, float speed){
-    this.numReflectionBars = numBars;
     this.topX = topX;
     this.topY = topY;
     this.speed = speed;
+
+    initialize(numBars);
+  }
+  
+  void initialize(int numBars){
+    this.numReflectionBars = numBars;
+    
     topWidth = 2 * (sunRadius + sunRadius/3);
     maxHeight = 10;
     bottomY = topY + (numBars * 2 * maxHeight);
@@ -48,8 +66,8 @@ class Reflection {
     
     for ( Rectangle bar : lowerBars ) {
       for ( int i = (int)bar.x; i < bar.x + bar.w; i++ ) {
-        float alphaMax = -255 - (0.1 * (bar.y - topY));
-        float alphaMin = 255 + (0.1 * (bar.y - topY));
+        float alphaMax = -255 - (bar.y - topY);
+        float alphaMin =  255 + (bar.y - topY);
         float alpha = map(i, bar.x, bar.x + bar.w, alphaMin, alphaMax);
         float step = map(i, bar.x, bar.x + bar.w, 0, 1);
         color lc = interpolateColor(barColors, step, RGB);
@@ -59,8 +77,8 @@ class Reflection {
       }
       
       bar.y += speed;
-      bar.x += 2 * speed;
-      bar.w -= 2 * (2 * speed);
+      bar.x += speed;
+      bar.w -= 2 * speed;
 
       if( bar.y > bottomY ) {
         // Bar at bottom, reset to top

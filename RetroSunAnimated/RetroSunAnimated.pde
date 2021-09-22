@@ -1,10 +1,15 @@
 int sunRadius = 400;
 int numSunBands = 5;
 int numReflectionBands = 6;
+int shoreY;
 float sunSlitSpeed = 0.8;
 float reflectionSpeed = 0.8;
-color bgColor = color(31, 0, 48);
 color starColor = color(255);
+color bgColor;                // RGB color is color(31, 0, 48)
+float bgHue = 279;
+float bgSat = 100;
+float bgBrightDefault = 18.8;
+float bgBright = bgBrightDefault;
 
 Sun sun;
 Reflection reflection;
@@ -22,20 +27,26 @@ class Rectangle {
 }
 
 void setup() {
-  size(1600, 1000);
+  size(1600, 900);
+  
+  colorMode(HSB, 360, 100, 100);
+  bgColor = color(bgHue, bgSat, bgBright);
 
-  // Setup Sun
-  sun = new Sun(sunRadius, numSunBands, sunSlitSpeed);
+  // Setup Sun a little below the top of the window
+  sun = new Sun(sunRadius - 25, numSunBands, sunSlitSpeed);
   
   // Setup Reflection bars
   int topX = sun.sunCenterX - sun.sunRadius - (sun.sunRadius/4);
   int topY = sun.sunCenterY + sun.sunRadius - (sun.sunRadius/6);
   reflection = new Reflection(numReflectionBands, topX, topY, reflectionSpeed);
 
+  // Setup shore
+  shoreY = topY;
+
   // Setup stars
   stars = new Star[int(width * height * 0.00052)];
   for ( int i = 0; i < stars.length; i++) {
-    stars[i] = new Star(int(random(10, width)), int(random(10, height)), starColor);
+    stars[i] = new Star(int(random(10, width)), int(random(10, topY)), starColor);
   }
 }
 
@@ -43,10 +54,36 @@ void draw() {
   background(bgColor);
 
   sun.draw();
+  
+  drawShore();
 
   reflection.draw();
 
   drawStars();
+}
+
+void mouseDragged(){
+  // Darken the background when the sun goes below the shore
+  bgBright = map(mouseY, sunRadius, shoreY + sunRadius, bgBrightDefault, 0);
+  bgColor = color(bgHue, bgSat, bgBright);
+    
+  // Reset the top of the sun to the mouseY posiiton 
+  sun.initialize(sun.sunCenterX, mouseY + sunRadius);
+    
+  // Fewer reflection bars when the sun is lower
+  int bars = int(map(sun.sunCenterY, sunRadius, shoreY + sunRadius, numReflectionBands, 0));
+  reflection.initialize(bars);
+  
+  // Set star brightness
+  int alpha = int(map(sun.sunCenterY, sunRadius, shoreY + sunRadius, 0, 255));
+  for( Star s : stars ){
+    s.setAlpha(alpha);
+  }
+}
+
+void drawShore(){
+  fill(bgColor);
+  rect(0, shoreY, width, height - shoreY);
 }
 
 void drawStars() {
